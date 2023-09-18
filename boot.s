@@ -34,7 +34,7 @@ SYSLEN  = 17                        ! sectors occupied.
 
 entry start
 start:
-    jmpi    go,#BOOTSEG             ! jmpi: 相对跳转指令，用于 x86 实模式下，假设当前CS==00h，执行此指令后将跳转到段CS=0x0c70，段也会变为 0x0c70，接下来将执行 0x0c70:go处指令
+    jmpi go,#BOOTSEG                ! jmpi: 相对跳转指令，用于 x86 实模式下，假设当前CS==00h，执行此指令后将跳转到段CS=0x0c70，段也会变为 0x0c70，接下来将执行 0x0c70:go处指令
 go: mov ax,cs                       ! cs -> ax
     mov ds,ax                       ! ax -> ds
     mov ss,ax                       ! ax -> ss
@@ -42,37 +42,39 @@ go: mov ax,cs                       ! cs -> ax
 
 ! ok, we've written the message, now
 load_system:
-    mov dx,#0x0000                  ! 0x0 -> dx
-    mov cx,#0x0002                  ! 0x2 -> cx     循环两次
+    mov dx,#0x0000                  ! 0x0 -> dx     磁盘驱动器号 0
+    mov cx,#0x0002                  ! 0x2 -> cx     扇区号 0，柱面号位 2
     mov ax,#SYSSEG                  ! 0x1000 -> ax
-    mov es,ax                       ! 0x1000 -> es
+    mov es,ax                       ! 0x1000        要保存的位置 ES:BX = 0x10000 + 0x0
     xor bx,bx                       ! 0x0 -> bx
-    mov ax,#0x200+SYSLEN            ! 0x200 + 17 == (0x217(535))
-    int 0x13                        ! 磁盘操作中断
-    jnc ok_load
-die:    jmp die
+    mov ax,#0x200+SYSLEN            ! 0x200 + 17 == (0x217(535))    # 0x0217 表示读取 17 个扇区 (17 * 512 = 8704)
+    int 0x13                        ! 磁盘操作中断(读磁盘)
+    jnc ok_load                     ! 读取成功则执行 ok_load
+die: jmp die                        ! 读取失败！
 
+
+! 执行到此，数据为 0x10000 ~ 512 * 17 = 0x12200， 0x10000 ~ 0x12200 都被占用
 ! now we want to move to protected mode ...
 ok_load:
-    cli         ! no interrupts allowed !
-    mov ax, #SYSSEG
-    mov ds, ax
-    xor ax, ax
-    mov es, ax
-    mov cx, #0x2000
-    sub si,si
-    sub di,di
+    cli                             ! 关中断
+    mov ax, #SYSSEG                 ! 0x1000 -> ax
+    mov ds, ax                      ! 0x1000 -> ds => ds:si 0x10000
+    xor ax, ax                      ! 0x0    -> ax
+    mov es, ax                      ! 0x0    -> es => es:di 0x20000
+    mov cx, #0x2000                 ! 0x2000 -> cx => 0x2000(8192, 8K)
+    sub si,si                       ! 0x0    -> si
+    sub di,di                       ! 0x0    -> di
     rep
-    movw
+    movw                            ! 将 0x10000 的 0x2000 数据传输到 0x20000 处
     mov ax, #BOOTSEG
     mov ds, ax
-    lidt    idt_48      ! load idt with 0,0
-    lgdt    gdt_48      ! load gdt with whatever appropriate
+    lidt    idt_48                  ! load idt with 0,0
+    lgdt    gdt_48                  ! load gdt with whatever appropriate
 
 ! absolute address 0x00000, in 32-bit protected mode.
     mov ax,#0x0001  ! protected mode (PE) bit
-    lmsw    ax      ! This is it!
-    jmpi    0,8     ! jmp offset 0 of segment 8 (cs)
+    lmsw ax      ! This is it!
+    jmpi 0,8     ! jmp offset 0 of segment 8 (cs)
 
 
 ! GDT（全局描述符表，由Intel x86处理器使用）用于定义在程序执行期间使用的各种内存区域的特征，包括：大小、基址以及访问权限

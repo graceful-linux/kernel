@@ -1,3 +1,15 @@
+# kernel
+
+> 内核学习和相关知识点整理
+
+## 文档
+
+[Intel基础知识](doc/intel.md)
+[汇编](doc/汇编.md)
+[BIOS](doc/BIOS.md)
+[kernel v0.0.0](doc/kernel-v0.0.0.md)
+
+
 # kernel-0.0.0
 
 取赵炯老师的源码编译[http://oldlinux.org/Linux.old/bochs/linux-0.00-050613.zip](http://oldlinux.org/Linux.old/bochs/linux-0.00-050613.zip)
