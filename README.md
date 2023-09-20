@@ -4,10 +4,10 @@
 
 ## 文档
 
-[Intel基础知识](doc/intel.md)
-[汇编](doc/汇编.md)
-[BIOS](doc/BIOS.md)
-[kernel v0.0.0](doc/kernel-v0.0.0.md)
+- [Intel基础知识](doc/intel.md)
+- [汇编](doc/汇编.md)
+- [BIOS](doc/BIOS.md)
+- [kernel v0.0.0](doc/kernel-v0.0.0.md)
 
 
 # kernel-0.0.0
