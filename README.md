@@ -8,6 +8,7 @@
 - [汇编](doc/汇编.md)
 - [BIOS](doc/BIOS.md)
 - [kernel v0.0.0](doc/kernel-v0.0.0.md)
+- [80386内存管理](doc/80386内存管理.md)
 
 
 # kernel-0.0.0
