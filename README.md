@@ -7,8 +7,11 @@
 - [Intel基础知识](doc/intel.md)
 - [汇编](doc/汇编.md)
 - [BIOS](doc/BIOS.md)
-- [kernel v0.0.0](doc/kernel-v0.0.0.md)
 - [80386内存管理](doc/80386内存管理.md)
+
+### 各个内核版本
+- [kernel v0.0.0](doc/kernel-v0.0.0.md)
+- [kernel v0.1.1](doc/kernel-v0.1.1.md)
 
 
 # kernel-0.0.0

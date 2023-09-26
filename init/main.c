@@ -107,7 +107,7 @@ void main(void)                                 // This really IS void, no error
  * Interrupts are still disabled. Do necessary setups, then
  * enable them
  */
-    ROOT_DEV = ORIG_ROOT_DEV;                   // FIXME:// 备份 ROOT_DEV，这个变量值保存在哪？
+    ROOT_DEV = ORIG_ROOT_DEV;                   // 备份 ROOT_DEV，这个变量值保存在哪？
     drive_info = DRIVE_INFO;                    // 备份硬盘参数表, char[32]，每个硬盘参数表为 16 字节
     /**
      * @brief
