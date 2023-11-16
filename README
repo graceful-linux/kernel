@@ -1,6 +1,8 @@
 Linux kernel
 ============
 
+相关文档：[https://dingjingmaster-docs.readthedocs.io/en/latest/index.html](https://dingjingmaster-docs.readthedocs.io/en/latest/index.html)
+
 There are several guides for kernel developers and users. These guides can
 be rendered in a number of formats, like HTML and PDF. Please read
 Documentation/admin-guide/README.rst first.
